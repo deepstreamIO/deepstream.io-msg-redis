@@ -1,0 +1,25 @@
+{
+  "name": "deepstream.io-redis",
+  "version": "0.0.1",
+  "description": "Redis-cache and messageConnector for deepstream.io",
+  "main": "connector.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoxton-one/deepstream.io-redis.git"
+  },
+  "author": "Wolfram Hempel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoxton-one/deepstream.io-redis/issues"
+  },
+  "homepage": "https://github.com/hoxton-one/deepstream.io-redis",
+  "optionalDependencies": {
+    "hiredis": "0.1.17"
+  },
+  "dependencies": {
+    "redis": "0.12.1"
+  }
+}
