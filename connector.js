@@ -9,7 +9,11 @@ var RedisConnector = function( options ) {
 	this._options = options;
 	
 	this._client = redis.createClient( options.port, options.host );
-	this._client.auth( options.password, this._onAuthResult.bind( this ) );
+	
+	if( options.password ) {
+		this._client.auth( options.password, this._onAuthResult.bind( this ) );
+	}
+	
 
 	this._client.on( 'ready', this._onReady.bind( this ) );
 	this._client.on( 'error', this._onError.bind( this ) );
@@ -23,7 +27,11 @@ RedisConnector.prototype.set = function( key, value, callback ) {
 };
 
 RedisConnector.prototype.get = function( key, callback ) {
-	this._client.get( key, callback );
+	console.time( 'redisGet' );
+	this._client.get( key, function(){
+		console.timeEnd( 'redisGet' );
+		callback( null, null );
+	} );
 };
 
 RedisConnector.prototype._onAuthResult = function( error, result ) {
@@ -52,9 +60,7 @@ RedisConnector.prototype._validateOptions = function( options ) {
 	if( !options.port ) {
 		throw new Error( 'Missing option \'port\' for redis-connector' );
 	}
-	if( !options.password ) {
-		throw new Error( 'Missing option \'password\' for redis-connector' );
-	}
+
 };
 
 module.exports = RedisConnector;
