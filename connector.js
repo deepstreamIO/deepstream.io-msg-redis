@@ -23,17 +23,31 @@ var RedisConnector = function( options ) {
 utils.inherits( RedisConnector, EventEmitter );
 
 RedisConnector.prototype.delete = function( key, callback ) {
-	//@TODO
+	this._client.del( key, callback );
 };
 
 RedisConnector.prototype.set = function( key, value, callback ) {
-	this._client.set( key, value, callback );
+	this._client.set( key, JSON.stringify( value ), callback );
 };
 
 RedisConnector.prototype.get = function( key, callback ) {
-	this._client.get( key, function(){
-		callback( null, null );
-	} );
+	this._client.get( key, function( error, result ){
+		var parsedResult;
+
+		if( result === null ) {
+			callback( error, null );
+			return;
+		}
+
+		try {
+			parsedResult = JSON.parse( result );
+		} catch ( e ) {
+			callback( e );
+			return;
+		}
+
+		callback( null, parsedResult );
+	});
 };
 
 RedisConnector.prototype._onAuthResult = function( error, result ) {
