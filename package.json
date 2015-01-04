@@ -1,6 +1,6 @@
 {
   "name": "deepstream.io-redis",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redis-cache and messageConnector for deepstream.io",
   "main": "connector.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "dependencies": {
     "redis": "0.12.1"
   },
-   "devDependencies": {
+  "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-release": "0.9.0"
   }
