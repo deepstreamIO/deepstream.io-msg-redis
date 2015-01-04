@@ -22,14 +22,16 @@ var RedisConnector = function( options ) {
 
 utils.inherits( RedisConnector, EventEmitter );
 
+RedisConnector.prototype.delete = function( key, callback ) {
+	//@TODO
+};
+
 RedisConnector.prototype.set = function( key, value, callback ) {
 	this._client.set( key, value, callback );
 };
 
 RedisConnector.prototype.get = function( key, callback ) {
-	console.time( 'redisGet' );
 	this._client.get( key, function(){
-		console.timeEnd( 'redisGet' );
 		callback( null, null );
 	} );
 };
