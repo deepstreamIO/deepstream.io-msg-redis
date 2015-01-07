@@ -2,7 +2,7 @@ var Connection = require( './Connection' ),
 	util = require( 'util' );
 
 var CacheConnector = function( options ) {
-	Connection.call( options );
+	Connection.call( this, options );
 };
 
 util.inherits( CacheConnector, Connection );
@@ -34,3 +34,5 @@ CacheConnector.prototype.get = function( key, callback ) {
 		callback( null, parsedResult );
 	});
 };
+
+module.exports = CacheConnector;

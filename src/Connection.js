@@ -21,7 +21,6 @@ var Connection = function( options ) {
 
 utils.inherits( Connection, EventEmitter );
 
-
 Connection.prototype._onAuthResult = function( error, result ) {
 	if( error ) {
 		this._onError( 'Failed to authenticate connection: ' + error.toString() );
@@ -34,6 +33,7 @@ Connection.prototype._onReady = function() {
 };
 
 Connection.prototype._onError = function( error ) {
+	console.log( error );
 	this.emit( 'error', 'REDIS error:' + error );
 };
 
