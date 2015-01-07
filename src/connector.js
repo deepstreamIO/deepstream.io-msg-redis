@@ -14,7 +14,6 @@ var RedisConnector = function( options ) {
 		this._client.auth( options.password, this._onAuthResult.bind( this ) );
 	}
 	
-
 	this._client.on( 'ready', this._onReady.bind( this ) );
 	this._client.on( 'error', this._onError.bind( this ) );
 	this._client.on( 'end', this._onDisconnect.bind( this ) );
@@ -48,6 +47,18 @@ RedisConnector.prototype.get = function( key, callback ) {
 
 		callback( null, parsedResult );
 	});
+};
+
+RedisConnector.prototype.unsubscribe = function( topic, callback ) {
+	
+};
+
+RedisConnector.prototype.subscribe = function( topic, callback ) {
+	
+};
+
+RedisConnector.prototype.publish = function( topic, message ) {
+
 };
 
 RedisConnector.prototype._onAuthResult = function( error, result ) {

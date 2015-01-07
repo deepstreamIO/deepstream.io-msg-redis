@@ -2,7 +2,7 @@
   "name": "deepstream.io-redis",
   "version": "0.2.2",
   "description": "Redis-cache and messageConnector for deepstream.io",
-  "main": "connector.js",
+  "main": "src/connector.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
