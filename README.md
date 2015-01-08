@@ -1,4 +1,4 @@
-deepstream.io-redis
+deepstream.io-msg-redis
 ===================
 
-Redis Cache &amp; Message Connector
+deepstream message connector for [redis](http://redis.io/)
