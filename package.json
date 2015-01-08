@@ -1,6 +1,6 @@
 {
   "name": "deepstream.io-redis",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "[deepstream](http://deepstream.io) message connector for [redis](http://redis.io/)",
   "main": "src/message-connector.js",
   "scripts": {
