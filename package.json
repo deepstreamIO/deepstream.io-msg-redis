@@ -1,19 +1,19 @@
 {
   "name": "deepstream.io-redis",
   "version": "0.2.2",
-  "description": "Redis-cache and messageConnector for deepstream.io",
-  "main": "src/main.js",
+  "description": "[deepstream](http://deepstream.io) message connector for [redis](http://redis.io/)",
+  "main": "src/message-connector.js",
   "scripts": {
     "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js test --autotest --watch ./src"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoxton-one/deepstream.io-redis.git"
+    "url": "https://github.com/hoxton-one/deepstream.io-msg-redis.git"
   },
   "author": "Wolfram Hempel",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hoxton-one/deepstream.io-redis/issues"
+    "url": "https://github.com/hoxton-one/deepstream.io-msg-redis/issues"
   },
   "homepage": "http://deepstream.io",
   "optionalDependencies": {

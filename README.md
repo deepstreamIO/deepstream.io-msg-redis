@@ -1,4 +1,4 @@
 deepstream.io-msg-redis
 ===================
 
-deepstream message connector for [redis](http://redis.io/)
+[deepstream](http://deepstream.io) message connector for [redis](http://redis.io/)

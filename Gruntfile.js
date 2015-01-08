@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 		release: {
 			options: {
 				github: { 
-					repo: 'hoxton-one/deepstream.io-redis',
+					repo: 'hoxton-one/deepstream.io-msg-redis',
 					usernameVar: 'GITHUB_USERNAME',
 					passwordVar: 'GITHUB_PASSWORD'
 				}
