@@ -1,11 +1,14 @@
-var Connection = require( './Connection' ),
+var Connection = require( './connection' ),
 	events = require( 'events' ),
 	util = require( 'util' );
 
 var MessageConnector = function( options ) {
 	Connection.call( this, options );
 	
-	this._name = options.serverName || ( Math.random() * 10000000000000000000 ).toString( 36 );
+	this.name = 'deepstream.io-msg-redis';
+	this.version = '0.2.2';
+	
+	this._senderId = options.serverName || ( Math.random() * 10000000000000000000 ).toString( 36 );
 	this._eventEmitter = new events.EventEmitter();
 	this._publishConnection = new Connection( options );
 	this._client.on( 'message', this._onMessage.bind( this ) );
@@ -16,7 +19,6 @@ util.inherits( MessageConnector, Connection );
 MessageConnector.prototype.unsubscribe = function( topic, callback ) {
 	this._client.unsubscribe( topic );
 	this._eventEmitter.removeListener( topic, callback );
-	this._client.on( 'unsubscribe', callback );
 };
 
 MessageConnector.prototype.subscribe = function( topic, callback ) {
@@ -25,7 +27,7 @@ MessageConnector.prototype.subscribe = function( topic, callback ) {
 };
 
 MessageConnector.prototype.publish = function( topic, message ) {
-	message._s = this._name;
+	message._s = this._senderId;
 	this._publishConnection._client.publish( topic, JSON.stringify( message ) );
 };
 
@@ -39,7 +41,7 @@ MessageConnector.prototype._onMessage = function( topic, message ) {
 		return;
 	}
 
-	if( parsedMessage._s === this._name ) {
+	if( parsedMessage._s === this._senderId ) {
 		return;
 	}
 

@@ -33,7 +33,6 @@ Connection.prototype._onReady = function() {
 };
 
 Connection.prototype._onError = function( error ) {
-	console.log( error );
 	this.emit( 'error', 'REDIS error:' + error );
 };
 

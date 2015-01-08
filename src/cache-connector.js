@@ -1,4 +1,4 @@
-var Connection = require( './Connection' ),
+var Connection = require( './connection' ),
 	util = require( 'util' );
 
 var CacheConnector = function( options ) {

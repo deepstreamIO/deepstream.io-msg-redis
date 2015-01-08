@@ -1,2 +1,2 @@
-exports.CacheConnector = require( './CacheConnector' );
-exports.MessageConnector = require( './MessageConnector' );
+exports.CacheConnector = require( './cache-connector' );
+exports.MessageConnector = require( './message-connector' );
