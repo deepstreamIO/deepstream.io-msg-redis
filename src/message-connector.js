@@ -1,5 +1,6 @@
 var Connection = require( './connection' ),
 	events = require( 'events' ),
+	pckg = require( '../package.json' ),
 	util = require( 'util' );
 
 /**
@@ -20,8 +21,8 @@ var Connection = require( './connection' ),
 var MessageConnector = function( options ) {
 	Connection.call( this, options );
 	
-	this.name = 'deepstream.io-msg-redis';
-	this.version = '0.2.3';
+	this.name = pckg.name;
+	this.version = pckg.version;
 	
 	this._senderId = options.serverName || ( Math.random() * 10000000000000000000 ).toString( 36 );
 	this._eventEmitter = new events.EventEmitter();
