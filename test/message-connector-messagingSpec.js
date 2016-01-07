@@ -92,3 +92,65 @@ describe( 'Messages are send between multiple instances', function(){
 		expect( callback_C1 ).toHaveBeenCalledWith({ notFor: 'B' });
 	});
 });
+
+describe( 'Channels are subscribed and unsubscribed when neccessary', function(){
+	//provide some setup before test
+	var connectorA;
+	it( 'subscribes to a channel only once', function( done ){
+		connectorA = new MessageConnector( settings );
+		//check subscription only happens once when subscribing
+		connectorA.client.on('subscribe', function(channel, count){
+			expect(count).toEqual(1);
+		});
+		connectorA.on('ready', function(){
+			//subscribe once
+			connectorA.subscribe('testtopic1', function(){});
+			//subscribe twice
+			connectorA.subscribe('testtopic1', function(){});
+			//wait for any 'subscribe' even to fire, then mark as done
+			setTimeout(function(){connectorA.client.end(true); done() }, MESSAGE_TIME);
+		});
+	} );
+	it( 'does not unsubscribe from a channel when still has subscriber', function( done ){
+		//check subscription only happens once when subscribing
+		connectorA = new MessageConnector( settings );
+		connectorA.client.on('unsubscribe', function(channel, count){
+			throw new Error('Should not have unsubscribed');
+		});
+		connectorA.on('ready', function(){
+			var fn1 = function(){};
+			//if this function gets called then test is successful as it was still subscribed
+			var fn2 = function(){ connectorA.client.end(true); done(); };
+			//subscribe once
+			connectorA.subscribe('testtopic1', fn1);
+			//subscribe twice
+			connectorA.subscribe('testtopic1', fn2);
+			//unsubscribe once
+			connectorA.unsubscribe('testtopic1', fn1);
+			//publish a topic to test subscription is still held
+			connectorA.publish('testtopic1', 'test');
+		});
+	} );
+	it( 'does unsubscribe from a channel when it has no more subscribers', function( done ){
+		//check subscription only happens once when subscribing
+		connectorA = new MessageConnector( settings );
+		//when client is unsubscribed then we have success
+		connectorA.client.on('unsubscribe', function(channel, count){
+			connectorA.client.end(true);
+			done();
+		});
+		connectorA.on('ready', function(){
+			var fn1 = function(){};
+			//if this function gets called then test is successful as it was still subscribed
+			var fn2 = function(){};
+			//subscribe once
+			connectorA.subscribe('testtopic1', fn1);
+			//subscribe twice
+			connectorA.subscribe('testtopic1', fn2);
+			//unsubscribe once
+			connectorA.unsubscribe('testtopic1', fn1);
+			//unsubscribe twice
+			connectorA.unsubscribe('testtopic1', fn2);
+		});
+	} );
+});
