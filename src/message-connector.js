@@ -44,8 +44,7 @@ util.inherits( MessageConnector, Connection );
  */
 MessageConnector.prototype.unsubscribe = function( topic, callback ) {
 	this._eventEmitter.removeListener( topic, callback );
-	//unsubscribe to redis subscription only if we have no more events listening to it
-	if ( !this._eventEmitter.listenerCount( topic ) ) {
+	if ( this._hasNoListeners( topic ) ) {
 		this.client.unsubscribe( topic );
 	}
 };
@@ -63,8 +62,7 @@ MessageConnector.prototype.unsubscribe = function( topic, callback ) {
  * @returns {void}
  */
 MessageConnector.prototype.subscribe = function( topic, callback ) {
-	//subscribe to redis topic only if we have not yet subscribed (if we do not have any event listeners on that topic already)
-	if ( !this._eventEmitter.listenerCount( topic ) ) {
+	if ( this._hasNoListeners( topic ) ) {
 		this.client.subscribe( topic );
 	}
 	this._eventEmitter.on( topic, callback );
@@ -85,6 +83,20 @@ MessageConnector.prototype.subscribe = function( topic, callback ) {
 MessageConnector.prototype.publish = function( topic, message ) {
 	message._s = this._senderId;
 	this._publishConnection.client.publish( topic, JSON.stringify( message ) );
+};
+
+/**
+ * Makes sure that no listeners are left for a given topic.
+ * This might be replaced by the more performant listenerCount( topic ) in the near
+ * future (listeners() creates a copy of the listeners array), but for the moment
+ * we prefer to maintain backwards compatibility with Node 0.x versions.
+ *
+ * @param   {String}  topic [description]
+ *
+ * @returns {Boolean} hasNoListeners
+ */
+MessageConnector.prototype._hasNoListeners = function( topic ) {
+	return this._eventEmitter.listeners( topic ).length === 0;
 };
 
 /**
@@ -114,7 +126,7 @@ MessageConnector.prototype._onMessage = function( topic, message ) {
 
 	delete parsedMessage._s;
 
-	if( this._eventEmitter.listeners( topic ).length === 0 ) {
+	if( this._hasNoListeners( topic ) ) {
 		this._onError( 'Received message for unknown topic ' + topic );
 		return;
 	}
