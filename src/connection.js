@@ -22,13 +22,13 @@ var Connection = function( options ) {
 
 	this._validateOptions( options );
 	this._options = options;
-	
+
 	this.client = redis.createClient( options.port, options.host );
-	
+
 	if( options.password ) {
 		this.client.auth( options.password, this._onAuthResult.bind( this ) );
 	}
-	
+
 	this.client.on( 'ready', this._onReady.bind( this ) );
 	this.client.on( 'error', this._onError.bind( this ) );
 	this.client.on( 'end', this._onDisconnect.bind( this ) );

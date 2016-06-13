@@ -1,0 +1,54 @@
+language: node_js
+
+env:
+  global:
+    - CXX=g++-4.8
+    - REDIS_HOST: 54.93.183.16
+    - REDIS_PORT: 6379
+
+node_js:
+  - "stable"
+  - "4.4.5"
+
+matrix:
+  include:
+    - node_js: "4.4.5"
+      os: osx
+
+script:
+  - npm test
+
+after_script:
+  - "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+
+before_deploy:
+  - chmod 555 scripts/package.sh && scripts/package.sh
+
+deploy:
+  - provider: s3
+    access_key_id:
+      secure: "AQXMd+w2L1X++AXQfzi4ZNiUaKnsVvoHJSf4g20wcOvQ9P8K8Gs+HkqnstO5PLWNIIF0URxrut9XA/wEaXo2yE0z6PTM/TIBRquKxautw8KN/K/JhKvlqTblLcibwCYouJMYAOVQ5dLdzrKgrJW6uaulUVftk+S9tQ4EC39F5BU="
+    secret_access_key:
+      secure: "lt79Z/Uf9NGONLwSKmG1DkqptRo+jSXUtGIYEWq8r0yWyi6Z1wPGSCzQhiFwiYUphbrdNovn5XQIaiCL5QXsPn6fl+YT2nC4OXJ0FRvpDQWoq3t3GMSSmNuGfdOUfma+rE0jth7Y5IDUbc6eDvVjjB+Je6c4Uf029lPI/SAaRsA="
+    bucket: ds-server-artifacts
+    skip_cleanup: true
+    acl: public_read
+    local_dir: build
+    upload-dir: $TRAVIS_REPO_SLUG
+  - provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: "T6NHUqaqM55ip4K13+YwUavK7S4DhGXzfTIwlGaxsT6QV6+yXnu9yIfbaNjMIi3Zlq5swCoY4b24lTHq3h9xxIqQ9FbjAf8Mu8LxKiEExK7sZyKpO4bgeMe5NOXHRWNnhaZx/yeXJ57kFE8CaHkL5q4DSO1npGdtndHrhYLFvp0="
+    file_glob: true
+    file:
+      - "build/*.tar.gz"
+      - "build/*.zip"
+    on:
+      tags: true
+
+plugins:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
