@@ -1,0 +1,12 @@
+plugins:
+  message:
+    name: direct
+    options:
+      localport: localPort
+      localhost: localHost
+      remoteUrls:
+        - localhost:remotePort1
+        - localhost:remotePort2
+      reconnectInterval: 100
+      securityToken: securityToken
+      minimumRequiredConnections: 0
