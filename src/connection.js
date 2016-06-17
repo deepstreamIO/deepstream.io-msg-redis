@@ -94,11 +94,13 @@ Connection.prototype._onDisconnect = function( error ) {
  * @returns {void}
  */
 Connection.prototype._validateOptions = function( options ) {
-  if( !options.host ) {
-    throw new Error( 'Missing option \'host\' for redis-connector' )
-  }
-  if( !options.port ) {
-    throw new Error( 'Missing option \'port\' for redis-connector' )
+  if ( !options.client ) {
+    if( !options.host ) {
+      throw new Error( 'Missing option \'host\' for redis-connector' )
+    }
+     if( !options.port ) {
+      throw new Error( 'Missing option \'port\' for redis-connector' )
+    }
   }
 }
 
