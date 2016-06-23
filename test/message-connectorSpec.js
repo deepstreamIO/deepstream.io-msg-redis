@@ -33,10 +33,6 @@ describe( 'the message connector has the correct structure', () => {
     expect( messageConnector instanceof EventEmitter ).to.equal( true )
   })
 
-  it( 'throws an error when required settings are missing', () => {
-    expect(() => { new MessageConnector( 'gibberish' ) }).to.throw()
-  })
-
   it( 'subscribes to a topic', () => {
     messageConnector.subscribe( 'someTopic', () => {})
   })

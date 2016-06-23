@@ -105,7 +105,7 @@ Connection.prototype._onError = function( error ) {
  * @ready
  * @returns {void}
  */
-Connection.prototype._onDisconnect = function( error ) {
+Connection.prototype._onDisconnect = function() {
   this._onError( 'disconnected' )
 }
 
