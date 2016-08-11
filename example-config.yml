@@ -1,12 +1,21 @@
 plugins:
   message:
-    name: direct
+    name: redis
     options:
-      localport: localPort
-      localhost: localHost
-      remoteUrls:
-        - localhost:remotePort1
-        - localhost:remotePort2
-      reconnectInterval: 100
-      securityToken: securityToken
-      minimumRequiredConnections: 0
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+# Using with a cluster
+# plugins:
+#   message:
+#     name: redis
+#     options:
+#       nodes:
+#         - host: <String>
+#           port: <Number>
+#           password: <String>
+#         - host: <String>
+#           port: <Number>
+#       maxRedirections: 16
+#       redisOptions:
+#         password: 'fallback-password'
