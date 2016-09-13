@@ -30,6 +30,21 @@ var MessageConnector = function( options ) {
 util.inherits( MessageConnector, Connection )
 
 /**
+ * Gracefully close the connection to redis
+ *
+ * Called when deepstream.close() is invoked.
+ * Emits 'close' event to notify deepstream of clean closure.
+ *
+ * @public
+ * @returns {void}
+ */
+MessageConnector.prototype.close = function(){
+  this.client.removeAllListeners( 'end' )
+  this.client.once( 'end', this.emit.bind( this, 'close' ) )
+  this.client.quit()
+}
+
+/**
  * Removes <callback> as a listener and notifies the server
  * that the client is no longer interested in messages for <topic>
  *
