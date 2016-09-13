@@ -1,6 +1,8 @@
-environment:
-  REDIS_HOST: 52.59.253.77
-  REDIS_PORT: 6379
+before_build:
+- nuget install redis-64 -excludeversion
+- redis-64\tools\redis-server.exe --service-install
+- redis-64\tools\redis-server.exe --service-start
+- '@ECHO Redis Started'
 
 # Do not insert any code under here without making sures it's in publishingtest first
 os:
