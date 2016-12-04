@@ -32,7 +32,7 @@ plugins:
 #           port: <Number>
 #       redisOptions:
 #         password: 'fallback-password'
-#		  maxRedirections: 16
+#         maxRedirections: 16
 ```
 
 ## Usage in node
