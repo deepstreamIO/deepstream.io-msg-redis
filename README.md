@@ -30,9 +30,9 @@ plugins:
 #           password: <String>
 #         - host: <String>
 #           port: <Number>
-#       maxRedirections: 16
 #       redisOptions:
 #         password: 'fallback-password'
+#		  maxRedirections: 16
 ```
 
 ## Usage in node
