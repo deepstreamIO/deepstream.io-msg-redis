@@ -3,7 +3,7 @@ deepstream.io-msg-redis [![npm version](https://badge.fury.io/js/deepstream.io-m
 
 [deepstream](http://deepstream.io) message connector for [redis](http://redis.io/)
 
-This connector uses [the npm redis package](https://www.npmjs.com/package/redis). Please have a look there for detailed options.
+This connector uses [the npm ioredis package](https://www.npmjs.com/package/ioredis). Please have a look there for detailed options.
 
 ## Install via
 ```bash
