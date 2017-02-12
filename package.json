@@ -31,6 +31,10 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "eslint-config-deepstream": ">=0.1.0"
+  },
+  "eslintConfig": {
+    "extends": "deepstream"
   }
 }

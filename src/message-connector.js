@@ -1,7 +1,7 @@
-var Connection = require( './connection' ),
-  events = require( 'events' ),
-  pckg = require( '../package.json' ),
-  util = require( 'util' )
+const Connection = require('./connection')
+const events = require('events')
+const pckg = require('../package.json')
+const util = require('util')
 
 /**
  * MessageConnector that uses Redis' pub-sub capabilities for deepstream
@@ -15,19 +15,19 @@ var Connection = require( './connection' ),
  *
  * @constructor
  */
-var MessageConnector = function( options ) {
-  Connection.call( this, options )
+const MessageConnector = function (options) {
+  Connection.call(this, options)
 
   this.name = pckg.name
   this.version = pckg.version
 
-  this._senderId = options.serverName || ( Math.random() * 10000000000000000000 ).toString( 36 )
+  this._senderId = options.serverName || (Math.random() * 10000000000000000000).toString(36)
   this._eventEmitter = new events.EventEmitter()
-  this._publishConnection = new Connection( options )
-  this.client.on( 'message', this._onMessage.bind( this ) )
+  this._publishConnection = new Connection(options)
+  this.client.on('message', this._onMessage.bind(this))
 }
 
-util.inherits( MessageConnector, Connection )
+util.inherits(MessageConnector, Connection)
 
 /**
  * Gracefully close the connection to redis
@@ -38,9 +38,9 @@ util.inherits( MessageConnector, Connection )
  * @public
  * @returns {void}
  */
-MessageConnector.prototype.close = function(){
-  this.client.removeAllListeners( 'end' )
-  this.client.once( 'end', this.emit.bind( this, 'close' ) )
+MessageConnector.prototype.close = function () {
+  this.client.removeAllListeners('end')
+  this.client.once('end', this.emit.bind(this, 'close'))
   this.client.quit()
 }
 
@@ -54,10 +54,10 @@ MessageConnector.prototype.close = function(){
  * @public
  * @returns {void}
  */
-MessageConnector.prototype.unsubscribe = function( topic, callback ) {
-  this._eventEmitter.removeListener( topic, callback )
-  if ( this._hasNoListeners( topic ) ) {
-    this.client.unsubscribe( topic )
+MessageConnector.prototype.unsubscribe = function (topic, callback) {
+  this._eventEmitter.removeListener(topic, callback)
+  if (this._hasNoListeners(topic)) {
+    this.client.unsubscribe(topic)
   }
 }
 
@@ -73,11 +73,11 @@ MessageConnector.prototype.unsubscribe = function( topic, callback ) {
  * @public
  * @returns {void}
  */
-MessageConnector.prototype.subscribe = function( topic, callback ) {
-  if ( this._hasNoListeners( topic ) ) {
-    this.client.subscribe( topic )
+MessageConnector.prototype.subscribe = function (topic, callback) {
+  if (this._hasNoListeners(topic)) {
+    this.client.subscribe(topic)
   }
-  this._eventEmitter.on( topic, callback )
+  this._eventEmitter.on(topic, callback)
 }
 
 /**
@@ -92,14 +92,14 @@ MessageConnector.prototype.subscribe = function( topic, callback ) {
  * @public
  * @returns {void}
  */
-MessageConnector.prototype.publish = function( topic, message ) {
+MessageConnector.prototype.publish = function (topic, message) {
   message._s = this._senderId
-  this._publishConnection.client.publish( topic, JSON.stringify( message ) )
+  this._publishConnection.client.publish(topic, JSON.stringify(message))
 }
 
 /**
  * Makes sure that no listeners are left for a given topic.
- * This might be replaced by the more performant listenerCount( topic ) in the near
+ * This might be replaced by the more performant listenerCount(topic) in the near
  * future (listeners() creates a copy of the listeners array), but for the moment
  * we prefer to maintain backwards compatibility with Node 0.x versions.
  *
@@ -107,8 +107,8 @@ MessageConnector.prototype.publish = function( topic, message ) {
  *
  * @returns {Boolean} hasNoListeners
  */
-MessageConnector.prototype._hasNoListeners = function( topic ) {
-  return this._eventEmitter.listeners( topic ).length === 0
+MessageConnector.prototype._hasNoListeners = function (topic) {
+  return this._eventEmitter.listeners(topic).length === 0
 }
 
 /**
@@ -122,28 +122,28 @@ MessageConnector.prototype._hasNoListeners = function( topic ) {
  * @private
  * @returns {void}
  */
-MessageConnector.prototype._onMessage = function( topic, message ) {
-  var parsedMessage
+MessageConnector.prototype._onMessage = function (topic, message) {
+  let parsedMessage
 
-  try{
-    parsedMessage = JSON.parse( message )
-  } catch ( e ) {
-    this._onError( 'Error parsing message ' + e.toString() )
+  try {
+    parsedMessage = JSON.parse(message)
+  } catch (e) {
+    this._onError(`Error parsing message ${e.toString()}`)
     return
   }
 
-  if( parsedMessage._s === this._senderId ) {
+  if (parsedMessage._s === this._senderId) {
     return
   }
 
   delete parsedMessage._s
 
-  if( this._hasNoListeners( topic ) ) {
-    this._onError( 'Received message for unknown topic ' + topic )
+  if (this._hasNoListeners(topic)) {
+    this._onError(`Received message for unknown topic ${topic}`)
     return
   }
 
-  this._eventEmitter.emit( topic, parsedMessage )
+  this._eventEmitter.emit(topic, parsedMessage)
 }
 
 module.exports = MessageConnector

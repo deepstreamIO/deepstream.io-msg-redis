@@ -1,3 +1,9 @@
+## [1.0.3] - 2017-02-12
+
+### Enhancements
+- Updating ioredis to v3.0
+- Build artifacts against v6 of node
+
 ## [1.0.2] - 2016-09-13
 
 ### Enhancements

@@ -1,7 +1,6 @@
-var Redis = require( 'ioredis' )
-var EventEmitter = require( 'events' ).EventEmitter
-var utils = require( 'util')
-var NUMBER = 'number'
+const Redis = require('ioredis')
+const EventEmitter = require('events').EventEmitter
+const utils = require('util')
 
 /**
  * Generic connection to Redis. Can be extended or
@@ -36,26 +35,26 @@ var NUMBER = 'number'
  * For more details and options see https://github.com/luin/ioredis
  * @constructor
  */
-var Connection = function( options ) {
+const Connection = function (options) {
   this.isReady = false
 
-  this._validateOptions( options )
-  //See https://github.com/luin/ioredis/wiki/Improve-Performance
-  if( options.nodes instanceof Array ) {
+  this._validateOptions(options)
+  // See https://github.com/luin/ioredis/wiki/Improve-Performance
+  if (options.nodes instanceof Array) {
     options.redisOptions.dropBufferSupport = true
-    var nodes = options.nodes
-    this.client = new Redis.Cluster( nodes, options )
+    const nodes = options.nodes
+    this.client = new Redis.Cluster(nodes, options)
   } else {
     options.dropBufferSupport = true
-    this.client = new Redis( options )
+    this.client = new Redis(options)
   }
 
-  this.client.on( 'ready', this._onReady.bind( this ) )
-  this.client.on( 'error', this._onError.bind( this ) )
-  this.client.on( 'end', this._onDisconnect.bind( this ) )
+  this.client.on('ready', this._onReady.bind(this))
+  this.client.on('error', this._onError.bind(this))
+  this.client.on('end', this._onDisconnect.bind(this))
 }
 
-utils.inherits( Connection, EventEmitter )
+utils.inherits(Connection, EventEmitter)
 
 /**
  * Callback for authentication responses
@@ -65,9 +64,9 @@ utils.inherits( Connection, EventEmitter )
  * @void
  * @returns {void}
  */
-Connection.prototype._onAuthResult = function( error ) {
-  if( error ) {
-    this._onError( 'Failed to authenticate connection: ' + error.toString() )
+Connection.prototype._onAuthResult = function (error) {
+  if (error) {
+    this._onError(`Failed to authenticate connection: ${error.toString()}`)
   }
 }
 
@@ -77,9 +76,9 @@ Connection.prototype._onAuthResult = function( error ) {
  * @ready
  * @returns {void}
  */
-Connection.prototype._onReady = function() {
+Connection.prototype._onReady = function () {
   this.isReady = true
-  this.emit( 'ready' )
+  this.emit('ready')
 }
 
 /**
@@ -90,8 +89,8 @@ Connection.prototype._onReady = function() {
  * @ready
  * @returns {void}
  */
-Connection.prototype._onError = function( error ) {
-  this.emit( 'error', 'REDIS error:' + error )
+Connection.prototype._onError = function (error) {
+  this.emit('error', error)
 }
 
 /**
@@ -102,8 +101,8 @@ Connection.prototype._onError = function( error ) {
  * @ready
  * @returns {void}
  */
-Connection.prototype._onDisconnect = function() {
-  this._onError( 'disconnected' )
+Connection.prototype._onDisconnect = function () {
+  this._onError('disconnected')
 }
 
 /**
@@ -114,12 +113,12 @@ Connection.prototype._onDisconnect = function() {
  * @ready
  * @returns {void}
  */
-Connection.prototype._validateOptions = function( options ) {
-  if( !options ) {
-    throw new Error( 'Missing option \'host\' for redis-connector' )
+Connection.prototype._validateOptions = function (options) {
+  if (!options) {
+    throw new Error('Missing option \'host\' for redis-connector')
   }
-  if( options.nodes && !( options.nodes instanceof Array ) ) {
-    throw new Error( 'Option nodes must be an array of connection parameters for cluster' )
+  if (options.nodes && !(options.nodes instanceof Array)) {
+    throw new Error('Option nodes must be an array of connection parameters for cluster')
   }
 }
 
