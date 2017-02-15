@@ -1,3 +1,5 @@
+'use strict'
+
 const Connection = require('./connection')
 const events = require('events')
 const pckg = require('../package.json')
