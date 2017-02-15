@@ -1,3 +1,5 @@
+'use strict'
+
 /* global describe, xdescribe, it, expect, jasmine */
 const MessageConnector = require('../src/message-connector')
 const expect = require('chai').expect
