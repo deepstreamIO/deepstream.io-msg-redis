@@ -20,15 +20,15 @@
   },
   "homepage": "http://deepstream.io",
   "dependencies": {
-    "ioredis": "^3.1.1"
+    "ioredis": "^4.9.0"
   },
   "devDependencies": {
     "chai": "^4.0.2",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.3",
     "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
-    "sinon": "^2.3.7",
-    "sinon-chai": "^2.11.0",
+    "mocha": "^6.1.0",
+    "sinon": "^7.3.1",
+    "sinon-chai": "^3.3.0",
     "eslint-config-deepstream": ">=2.2.1"
   },
   "eslintConfig": {
